@@ -22,6 +22,24 @@ namespace Core.Entities
             ValidateCliente(nome, sexo, endereco);
         }
 
+        public Cliente(string nome, string sexo, string endereco)
+        {
+            ValidateCliente(nome, sexo, endereco);
+        }
+
+        public void AlterarDados(string nome, string sexo, string endereco) => ValidateCliente(nome, sexo, endereco);
+
+        public virtual void AdicionarTelefone(Telefone telefone)
+        {
+            if (telefone.Ativo)
+            {
+                foreach (Telefone tel in Telefones)
+                    tel.Desativar();
+            }
+
+            Telefones.Add(telefone);
+        }
+
         private void ValidateCliente(string nome, string sexo, string endereco)
         {
             EntitieException.When(string.IsNullOrEmpty(nome), "O nome é obrigatório.");
@@ -31,16 +49,6 @@ namespace Core.Entities
             Nome = nome;
             Sexo = (ESexo)Enum.Parse(typeof(ESexo), sexo.Trim(), ignoreCase: true);
             Endereco = endereco;
-        }
-
-        public virtual void AdicionarTelefone(Telefone telefone)
-        {
-            if (telefone.Ativo)
-            {
-                EntitieException.When(Telefones.Exists(t => t.Ativo), "Já existe um telefone ativo.");
-            }
-
-            Telefones.Add(telefone);
         }
     }
 }

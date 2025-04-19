@@ -22,6 +22,7 @@ namespace Core.Entities
             ValidateTelefone(numero, ativo);
         }
 
+        public void Desativar() => Ativo = false;
 
         private void ValidateTelefone(string numero, bool ativo)
         {
