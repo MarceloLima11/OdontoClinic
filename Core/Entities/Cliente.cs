@@ -1,5 +1,7 @@
-﻿using Core.Extensions;
+﻿using Core.Enums;
+using Core.Extensions;
 using Core.Validations;
+using System;
 using System.Collections.Generic;
 
 namespace Core.Entities
@@ -8,7 +10,7 @@ namespace Core.Entities
     {
         public virtual int Id { get; protected set; }
         public virtual string Nome { get; protected set; }
-        public virtual string Sexo { get; protected set; }
+        public virtual ESexo Sexo { get; protected set; }
         public virtual string Endereco { get; protected set; }
         public virtual List<Telefone> Telefones { get; protected set; } = new List<Telefone>();
 
@@ -27,7 +29,7 @@ namespace Core.Entities
             EntitieException.When(!sexo.IsSexoValid(), "Sexo inválido. Use Masculino, Feminino ou Outro.");
 
             Nome = nome;
-            Sexo = sexo;
+            Sexo = (ESexo)Enum.Parse(typeof(ESexo), sexo.Trim(), ignoreCase: true);
             Endereco = endereco;
         }
 

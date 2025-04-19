@@ -10,6 +10,6 @@ namespace Core.Interfaces.Base
         void Delete(G entity);
         void Add(G entity);
         void Update(G entity);
-        Task<IEnumerable<G>> GetAll();
+        Task<IList<G>> GetAll();
     }
 }

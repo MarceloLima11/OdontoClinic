@@ -1,9 +1,9 @@
 ﻿namespace Core.Enums
 {
-    enum ESexo
+    public enum ESexo
     {
-        masculino,
-        feminino,
-        outro
+        Masculino,
+        Feminino,
+        Outro
     }
 }

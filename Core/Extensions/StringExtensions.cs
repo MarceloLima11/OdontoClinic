@@ -10,9 +10,7 @@ namespace Core.Extensions
             if (string.IsNullOrWhiteSpace(sexo))
                 return false;
 
-            string normalizado = sexo.Trim().ToLower();
-
-            return Enum.IsDefined(typeof(ESexo), normalizado);
+            return Enum.TryParse<ESexo>(sexo.Trim(), ignoreCase: true, out _);
         }
     }
 }
