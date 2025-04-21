@@ -1,19 +1,23 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Core.Entities;
 using Core.Interfaces;
 using Application.DTOs;
 using Application.Interfaces;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Application.Services
 {
     public class ClienteService : IClienteService
     {
+        private readonly ICacheService _cacheService;
         private readonly IClienteRepository _clienteRepository;
-        public ClienteService(IClienteRepository clienteRepository)
+
+        public ClienteService(IClienteRepository clienteRepository, ICacheService cacheService)
         {
+            _cacheService = cacheService;
             _clienteRepository = clienteRepository;
         }
 
@@ -27,11 +31,21 @@ namespace Application.Services
                 cliente.AdicionarTelefone(telefone);
             }
 
+            await _cacheService.RemoveAsync("clientes:todos");
+
             await _clienteRepository.AddAsync(cliente);
         }
 
         public async Task<ClienteDto> ObterPorIdAsync(int id)
         {
+            var cacheKey = $"cliente:{id}";
+            var cachedJson = await _cacheService.GetAsync(cacheKey);
+
+            if (!string.IsNullOrEmpty(cachedJson))
+            {
+                return JsonConvert.DeserializeObject<ClienteDto>(cachedJson);
+            }
+
             var cliente = await _clienteRepository.GetByIdAsync(id);
             if (cliente is null) 
                 return null;
@@ -46,11 +60,22 @@ namespace Application.Services
                 Telefones = cliente.Telefones.Select(x => x.Numero).ToList()
             };
 
+            var json = JsonConvert.SerializeObject(clienteDto);
+            await _cacheService.SetAsync(cacheKey, json);
+
             return clienteDto;
         }
 
         public async Task<IList<ClienteDto>> ObterTodosAsync()
         {
+            const string cacheKey = "clientes:todos";
+
+            var cachedJson = await _cacheService.GetAsync(cacheKey);
+            if(!string.IsNullOrEmpty(cachedJson))
+            {
+                return JsonConvert.DeserializeObject<IList<ClienteDto>>(cachedJson);
+            }
+
             var clientes = await _clienteRepository.GetAllAsync();
             if (clientes is null)
                 return new List<ClienteDto>();
@@ -64,6 +89,9 @@ namespace Application.Services
                 Telefone = x.Telefones.FirstOrDefault(t => t.Ativo).Numero,
                 Telefones = x.Telefones.Select(t => t.Numero).ToList()
             }).ToList();
+
+            var json = JsonConvert.SerializeObject(clientesDto);
+            await _cacheService.SetAsync(cacheKey, json);
 
             return clientesDto;
         }
@@ -91,6 +119,9 @@ namespace Application.Services
                 cliente.AdicionarTelefone(novoTelefone);
             }
 
+            await _cacheService.RemoveAsync("clientes:todos");
+            await _cacheService.RemoveAsync($"cliente:{id}");
+
             await _clienteRepository.UpdateAsync(cliente);
         }
 
@@ -99,6 +130,9 @@ namespace Application.Services
             var cliente = await _clienteRepository.GetByIdAsync(id);
             if (cliente is null)
                 throw new Exception("Cliente não encontrado.");
+
+            await _cacheService.RemoveAsync("clientes:todos");
+            await _cacheService.RemoveAsync($"cliente:{id}");
 
             await _clienteRepository.DeleteAsync(cliente);
         }

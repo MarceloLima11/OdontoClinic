@@ -1,10 +1,11 @@
-using Application.Interfaces;
-using Application.Services;
-using Core.Interfaces;
-using Infrastructure.Data.Repositories;
-using System.Web.Mvc;
 using Unity;
 using Unity.Mvc5;
+using System.Web.Mvc;
+using Core.Interfaces;
+using Infrastructure.Cache;
+using Application.Services;
+using Application.Interfaces;
+using Infrastructure.Data.Repositories;
 
 namespace Presentation
 {
@@ -15,6 +16,7 @@ namespace Presentation
 			var container = new UnityContainer();
 
             container.RegisterType<IClienteService, ClienteService>();
+            container.RegisterType<ICacheService, RedisCacheService>();
             container.RegisterType<IClienteRepository, ClienteRepository>();
                         
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
