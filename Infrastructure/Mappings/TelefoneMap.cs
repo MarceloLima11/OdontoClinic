@@ -12,6 +12,7 @@ namespace Infrastructure.Mappings
             Id(x => x.Id).GeneratedBy.Identity();
 
             Map(x => x.Numero).Not.Nullable();
+
             Map(x => x.Ativo).Not.Nullable();
 
             References(x => x.Cliente)

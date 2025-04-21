@@ -1,0 +1,25 @@
+﻿@model Application.DTOs.ClienteDto
+
+@{
+    ViewBag.Title = "Detalhes";
+}
+
+<h2>Detalhes</h2>
+
+<div>
+    <p><strong>Nome:</strong> @Model.Nome</p>
+    <p><strong>Sexo:</strong> @Model.Sexo</p>
+    <p><strong>Endereço:</strong> @Model.Endereco</p>
+    <p><strong>Telefone(s):</strong></p>
+    <ul>
+        @foreach (var tel in Model.Telefones)
+        {
+            <li>@tel</li>
+        }
+    </ul>
+</div>
+
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Voltar", "Index")
+</p>

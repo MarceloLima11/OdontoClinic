@@ -1,0 +1,35 @@
+﻿@model Application.DTOs.ClienteDto
+
+@{
+    ViewBag.Title = "Editar";
+}
+
+<h2>Editar Cliente</h2>
+
+@using (Html.BeginForm("Edit", "Cliente", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Id)
+
+                <div>
+                    <label>Nome:</label>
+                    @Html.TextBoxFor(x => x.Nome)
+                </div>
+
+                <div>
+                    <label>Sexo:</label>
+                    @Html.TextBoxFor(x => x.Sexo)
+                </div>
+
+                <div>
+                    <label>Endereço:</label>
+                    @Html.TextBoxFor(x => x.Endereco)
+                </div>
+
+                <div>
+                    <label>Telefone:</label>
+                    @Html.TextBoxFor(x => x.Telefone)
+                </div>
+
+                <button type="submit">Salvar</button>
+            }

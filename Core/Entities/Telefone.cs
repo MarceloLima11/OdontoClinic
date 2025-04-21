@@ -7,7 +7,9 @@ namespace Core.Entities
         public virtual int Id { get; protected set; }
         public virtual string Numero { get; protected set; }
         public virtual bool Ativo { get; protected set; }
-        public virtual Cliente Cliente { get; protected set; }
+        public virtual Cliente Cliente { get; set; }
+
+        protected Telefone() {}
 
         public Telefone(int id, string numero, bool ativo)
         {
@@ -22,7 +24,7 @@ namespace Core.Entities
             ValidateTelefone(numero, ativo);
         }
 
-        public void Desativar() => Ativo = false;
+        public virtual void Desativar() => Ativo = false;
 
         private void ValidateTelefone(string numero, bool ativo)
         {

@@ -1,0 +1,22 @@
+﻿@model Application.DTOs.ClienteDto
+
+@{
+    ViewBag.Title = "Excluir";
+}
+
+<h2>Tem certeza que deseja excluir este cliente?</h2>
+
+<div>
+    <strong>Nome:</strong> @Model.Nome <br />
+    <strong>Sexo:</strong> @Model.Sexo <br />
+    <strong>Endereço:</strong> @Model.Endereco <br />
+    <strong>Telefone:</strong> @Model.Telefone <br />
+</div>
+
+@using (Html.BeginForm("Delete", "Cliente", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id)
+    <button type="submit">Confirmar Exclusão</button>
+    @Html.ActionLink("Cancelar", "Index")
+}

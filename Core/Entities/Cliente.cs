@@ -1,7 +1,7 @@
-﻿using Core.Enums;
+﻿using System;
+using Core.Enums;
 using Core.Extensions;
 using Core.Validations;
-using System;
 using System.Collections.Generic;
 
 namespace Core.Entities
@@ -12,7 +12,9 @@ namespace Core.Entities
         public virtual string Nome { get; protected set; }
         public virtual ESexo Sexo { get; protected set; }
         public virtual string Endereco { get; protected set; }
-        public virtual List<Telefone> Telefones { get; protected set; } = new List<Telefone>();
+        public virtual IList<Telefone> Telefones { get; protected set; } = new List<Telefone>();
+
+        protected Cliente() {}
 
         public Cliente(int id, string nome, string sexo, string endereco)
         {
@@ -27,7 +29,7 @@ namespace Core.Entities
             ValidateCliente(nome, sexo, endereco);
         }
 
-        public void AlterarDados(string nome, string sexo, string endereco) => ValidateCliente(nome, sexo, endereco);
+        public virtual void AlterarDados(string nome, string sexo, string endereco) => ValidateCliente(nome, sexo, endereco);
 
         public virtual void AdicionarTelefone(Telefone telefone)
         {
@@ -37,6 +39,7 @@ namespace Core.Entities
                     tel.Desativar();
             }
 
+            telefone.Cliente = this;
             Telefones.Add(telefone);
         }
 

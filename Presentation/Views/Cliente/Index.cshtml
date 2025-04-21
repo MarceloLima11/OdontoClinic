@@ -1,0 +1,42 @@
+﻿@model IList<Application.DTOs.ClienteDto>
+
+@{ViewBag.Title = "Clientes Cadastrados"; }
+
+<h2>Clientes</h2>
+
+<p>
+    @Html.ActionLink("Novo Cliente", "Create")
+</p>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Sexo</th>
+            <th>Endereço</th>
+            <th>Telefones</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cliente in Model)
+        {
+            <tr>
+                <td>@cliente.Nome</td>
+                <td>@cliente.Sexo</td>
+                <td>@cliente.Endereco</td>
+                <td>
+                    @foreach (var telefone in cliente.Telefones)
+                    {
+                        <div>@telefone</div>
+                    }
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = cliente.Id }) |
+                    @Html.ActionLink("Detalhes", "Details", new { id = cliente.Id }) |
+                    @Html.ActionLink("Excluir", "Delete", new { id = cliente.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

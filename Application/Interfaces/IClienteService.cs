@@ -6,10 +6,10 @@ namespace Application.Interfaces
 {
     public interface IClienteService
     {
-        Task<IList<ClienteDto>> ObterTodos();
-        Task<ClienteDto> ObterPorId(int id);
-        void Cadastrar(ClienteDto dto);
-        void Atualizar(int id, ClienteDto dto);
-        void Remover(int id);
+        Task<IList<ClienteDto>> ObterTodosAsync();
+        Task<ClienteDto> ObterPorIdAsync(int id);
+        Task CadastrarAsync(ClienteDto dto);
+        Task AtualizarAsync(int id, ClienteDto dto);
+        Task RemoverAsync(int id);
     }
 }

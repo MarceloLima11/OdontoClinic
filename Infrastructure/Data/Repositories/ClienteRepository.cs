@@ -10,65 +10,65 @@ namespace Infrastructure.Data.Repositories
 {
     public class ClienteRepository : IClienteRepository
     {
-        public void Add(Cliente cliente)
+        public async Task AddAsync(Cliente cliente)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    session.Save(cliente);
+                    await session.SaveAsync(cliente);
                     transaction.Commit();
                 }
             }
         }
 
-        public async Task<Cliente> GetById(int id)
+        public async Task<Cliente> GetByIdAsync(int id)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                return await session.GetAsync<Cliente>(id);
+                return await session.Query<Cliente>().Fetch(x => x.Telefones).FirstOrDefaultAsync(x => x.Id == id);
             }
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    session.DeleteAsync(id);
+                    await session.DeleteAsync(id);
                     transaction.Commit();
                 }
             }
         }
 
-        public void Delete(Cliente cliente)
+        public async Task DeleteAsync(Cliente cliente)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    session.Delete(cliente);
+                    await session.DeleteAsync(cliente);
                     transaction.Commit();
                 }
             }
         }
 
-        public async Task<IList<Cliente>> GetAll()
+        public async Task<IList<Cliente>> GetAllAsync()
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                return await session.Query<Cliente>().ToListAsync();
+                return await session.Query<Cliente>().Fetch(t => t.Telefones).ToListAsync();
             }
         }
 
-        public void Update(Cliente cliente)
+        public async Task UpdateAsync(Cliente cliente)
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
                 using (ITransaction transaction = session.BeginTransaction())
                 {
-                    session.Delete(cliente);
+                    await session.UpdateAsync(cliente);
                     transaction.Commit();
                 }
             }

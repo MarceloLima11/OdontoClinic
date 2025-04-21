@@ -1,0 +1,34 @@
+﻿@model Application.DTOs.ClienteDto
+
+@{
+    ViewBag.Title = "Cadastrar Cliente";
+}
+
+<h2>Novo Cliente</h2>
+
+@using (Html.BeginForm("Create", "Cliente", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        <label>Nome:</label>
+        @Html.TextBoxFor(m => m.Nome)
+    </div>
+
+    <div>
+        <label>Sexo (Masculino, Feminino, Outro):</label>
+        @Html.TextBoxFor(m => m.Sexo)
+    </div>
+
+    <div>
+        <label>Endereço:</label>
+        @Html.TextBoxFor(m => m.Endereco)
+    </div>
+
+    <div>
+        <label>Telefone:</label>
+        @Html.TextBoxFor(m => m.Telefones)
+    </div>
+
+    <button type="submit">Salvar</button>
+}
