@@ -1,14 +1,29 @@
-﻿<!DOCTYPE html>
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Erro</title>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
 </head>
 <body>
-    <hgroup>
-        <h1>Erro.</h1>
-        <h2>Ocorreu um erro ao processar sua solicitação.</h2>
-    </hgroup>
+    <div class="container text-center" style="margin-top: 80px;">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h2><span class="glyphicon glyphicon-warning-sign"></span> Opa! Algo deu errado</h2>
+            </div>
+            <div class="panel-body">
+                <p class="lead">Ocorreu um erro ao processar sua solicitação.</p>
+                <p>Por favor, tente novamente mais tarde.</p>
+                <a href="~/Cliente/Index" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-home"></span> Voltar para o início
+                </a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

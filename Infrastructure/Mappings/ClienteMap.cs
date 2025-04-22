@@ -20,7 +20,8 @@ namespace Infrastructure.Mappings
 
             HasMany(x => x.Telefones)
                 .Cascade.AllDeleteOrphan()
-                .Inverse().KeyColumn("ClienteId");
+                .Inverse().KeyColumn("ClienteId")
+                .Not.LazyLoad();
         }
     }
 }

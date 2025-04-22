@@ -1,35 +1,54 @@
 ﻿@model Application.DTOs.ClienteDto
 
 @{
-    ViewBag.Title = "Editar";
+    ViewBag.Title = "Editar Cliente";
 }
 
-<h2>Editar Cliente</h2>
+<h2>@ViewBag.Title</h2>
 
-@using (Html.BeginForm("Edit", "Cliente", FormMethod.Post))
+@using (Html.BeginForm("Edit", "Cliente", FormMethod.Post, new { onSubmit = "return validarTelefonesAntesDeEnviar();" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id)
+
+    <div class="form-group">
+        <label>Nome:</label>
+        @Html.TextBoxFor(x => x.Nome, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Sexo:</label>
+        @Html.DropDownListFor(x => x.Sexo,
+            new SelectList(new[] { "Masculino", "Feminino", "Outro" }, Model.Sexo),
+            "Selecione", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Endereço:</label>
+        @Html.TextBoxFor(x => x.Endereco, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Telefone(s):</label>
+        <div id="telefones-container">
+            @foreach (var telefone in Model.Telefones)
             {
-                @Html.AntiForgeryToken()
-                @Html.HiddenFor(x => x.Id)
+                <div class="input-group mb-2" style="margin-bottom:8px">
 
-                <div>
-                    <label>Nome:</label>
-                    @Html.TextBoxFor(x => x.Nome)
+                    <input type="text" name="Telefones" class="form-control" value="@telefone" />
                 </div>
-
-                <div>
-                    <label>Sexo:</label>
-                    @Html.TextBoxFor(x => x.Sexo)
-                </div>
-
-                <div>
-                    <label>Endereço:</label>
-                    @Html.TextBoxFor(x => x.Endereco)
-                </div>
-
-                <div>
-                    <label>Telefone:</label>
-                    @Html.TextBoxFor(x => x.Telefone)
-                </div>
-
-                <button type="submit">Salvar</button>
             }
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="adicionarTelefone()">Adicionar</button>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" value="Salvar" class="btn btn-primary" />
+        @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-default" })
+    </div>
+
+    @section scripts {
+        <script src="~/Content/js/cliente-form.js"></script>
+    }
+}

@@ -1,22 +1,47 @@
 ﻿@model Application.DTOs.ClienteDto
 
 @{
-    ViewBag.Title = "Excluir";
+    ViewBag.Title = "Excluir Cliente";
 }
 
-<h2>Tem certeza que deseja excluir este cliente?</h2>
+<<div class="container">
+    <h2>Confirmar Exclusão</h2>
+    <hr />
 
-<div>
-    <strong>Nome:</strong> @Model.Nome <br />
-    <strong>Sexo:</strong> @Model.Sexo <br />
-    <strong>Endereço:</strong> @Model.Endereco <br />
-    <strong>Telefone:</strong> @Model.Telefone <br />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label><strong>Nome:</strong></label>
+                <p>@Model.Nome</p>
+            </div>
+
+            <div class="form-group">
+                <label><strong>Sexo:</strong></label>
+                <p>@Model.Sexo</p>
+            </div>
+
+            <div class="form-group">
+                <label><strong>Endereço:</strong></label>
+                <p>@Model.Endereco</p>
+            </div>
+
+            <div class="form-group">
+                <label><strong>Telefone(s):</strong></label>
+                @foreach (var telefone in Model.Telefones)
+                {
+                    <p>@telefone</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    @using (Html.BeginForm("Delete", "Cliente", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <div class="form-group">
+            <input type="submit" value="Excluir" class="btn btn-danger" />
+            @Html.ActionLink("Cancelar", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
 </div>
-
-@using (Html.BeginForm("Delete", "Cliente", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(x => x.Id)
-    <button type="submit">Confirmar Exclusão</button>
-    @Html.ActionLink("Cancelar", "Index")
-}

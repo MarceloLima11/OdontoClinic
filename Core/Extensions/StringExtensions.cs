@@ -1,5 +1,5 @@
-﻿using Core.Enums;
-using System;
+﻿using System;
+using Core.Enums;
 
 namespace Core.Extensions
 {

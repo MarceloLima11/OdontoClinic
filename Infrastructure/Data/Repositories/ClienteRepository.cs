@@ -1,7 +1,8 @@
 ﻿using NHibernate;
+using System.Linq;
 using Core.Entities;
-using NHibernate.Linq;
 using Core.Interfaces;
+using NHibernate.Linq;
 using System.Threading.Tasks;
 using Infrastructure.NHibernate;
 using System.Collections.Generic;
@@ -26,7 +27,12 @@ namespace Infrastructure.Data.Repositories
         {
             using (ISession session = NHibernateHelper.OpenSession())
             {
-                return await session.Query<Cliente>().Fetch(x => x.Telefones).FirstOrDefaultAsync(x => x.Id == id);
+                return await session.Query<Cliente>()
+                    .Where(c => c.Id == id)
+                    .FetchMany(c => c.Telefones)
+                    .ToListAsync()
+                    .ContinueWith(t => t.Result.GroupBy(c => c.Id)
+                    .Select(g => g.First()).FirstOrDefault());
             }
         }
 

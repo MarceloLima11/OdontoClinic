@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
-using System.Threading.Tasks;
 using Application.Interfaces;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Cache
 {

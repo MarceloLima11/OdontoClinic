@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using Core.Entities;
+using Newtonsoft.Json;
 using Core.Interfaces;
 using Application.DTOs;
-using Application.Interfaces;
 using System.Threading.Tasks;
+using Application.Interfaces;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Application.Services
 {
@@ -56,7 +56,7 @@ namespace Application.Services
                 Nome = cliente.Nome,
                 Sexo = cliente.Sexo.ToString(),
                 Endereco = cliente.Endereco,
-                Telefone = cliente.Telefones.FirstOrDefault(x => x.Ativo).Numero,
+                Telefone = cliente.Telefones.FirstOrDefault(x => x.Ativo)?.Numero,
                 Telefones = cliente.Telefones.Select(x => x.Numero).ToList()
             };
 
@@ -119,10 +119,9 @@ namespace Application.Services
                 cliente.AdicionarTelefone(novoTelefone);
             }
 
+            await _clienteRepository.UpdateAsync(cliente);
             await _cacheService.RemoveAsync("clientes:todos");
             await _cacheService.RemoveAsync($"cliente:{id}");
-
-            await _clienteRepository.UpdateAsync(cliente);
         }
 
         public async Task RemoverAsync(int id)
@@ -131,10 +130,9 @@ namespace Application.Services
             if (cliente is null)
                 throw new Exception("Cliente não encontrado.");
 
+            await _clienteRepository.DeleteAsync(cliente);
             await _cacheService.RemoveAsync("clientes:todos");
             await _cacheService.RemoveAsync($"cliente:{id}");
-
-            await _clienteRepository.DeleteAsync(cliente);
         }
     }
 }

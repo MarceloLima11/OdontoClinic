@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Página não encontrada";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div style="text-align: center; margin-top: 50px;">
+        <svg width="200" height="200" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+                     10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+                  fill="#dc3545" />
+        </svg>
+        <h1 style="color:#dc3545; font-size: 3em;">404</h1>
+        <p style="font-size: 1.2em;">Oops! Página não encontrada.</p>
+        <a href="@Url.Action("Index", "Cliente")" class="btn btn-primary mt-3">Voltar para o início</a>
+    </div>
+</div>

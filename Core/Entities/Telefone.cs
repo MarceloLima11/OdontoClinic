@@ -28,8 +28,6 @@ namespace Core.Entities
 
         private void ValidateTelefone(string numero, bool ativo)
         {
-            EntitieException.When(string.IsNullOrWhiteSpace(numero), "O número de telefone é obrigatório.");
-
             Numero = numero;
             Ativo = ativo;
         }

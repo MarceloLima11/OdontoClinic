@@ -2,13 +2,13 @@
 
 @{ViewBag.Title = "Clientes Cadastrados"; }
 
-<h2>Clientes</h2>
+<h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Novo Cliente", "Create")
-</p>
+@Html.ActionLink("Cadastrar Cliente", "Create", null, new { @class = "btn btn-default", role = "button" })
+<br />
+<br />
 
-<table border="1">
+<table class="table table-hover table-bordered" border="1">
     <thead>
         <tr>
             <th>Nome</th>

@@ -1,25 +1,43 @@
 ﻿@model Application.DTOs.ClienteDto
 
 @{
-    ViewBag.Title = "Detalhes";
+    ViewBag.Title = "Detalhes do Cliente";
 }
 
-<h2>Detalhes</h2>
+<div class="container" style="max-width: 600px; margin-top: 30px;">
+    <h2 class="text-center">Detalhes do Cliente</h2>
+    <hr />
 
-<div>
-    <p><strong>Nome:</strong> @Model.Nome</p>
-    <p><strong>Sexo:</strong> @Model.Sexo</p>
-    <p><strong>Endereço:</strong> @Model.Endereco</p>
-    <p><strong>Telefone(s):</strong></p>
-    <ul>
-        @foreach (var tel in Model.Telefones)
-        {
-            <li>@tel</li>
-        }
-    </ul>
+    <dl class="dl-horizontal">
+        <dt>Nome:</dt>
+        <dd>@Model.Nome</dd>
+
+        <dt>Sexo:</dt>
+        <dd>@Model.Sexo</dd>
+
+        <dt>Endereço:</dt>
+        <dd>@Model.Endereco</dd>
+
+        <dt>Telefone(s):</dt>
+        <dd>
+            @if (Model.Telefones != null && Model.Telefones.Any())
+            {
+                <ul class="list-unstyled">
+                    @foreach (var tel in Model.Telefones)
+                    {
+                        <li>@tel</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>Nenhum telefone cadastrado.</span>
+            }
+        </dd>
+    </dl>
+
+    <div class="text-center">
+        @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-default" })
+    </div>
 </div>
-
-<p>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Voltar", "Index")
-</p>

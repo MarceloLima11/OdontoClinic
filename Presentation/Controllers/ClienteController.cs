@@ -28,7 +28,7 @@ namespace Presentation.Controllers
         {
             var cliente = await _clienteService.ObterPorIdAsync(id);
             if (cliente is null)
-                return HttpNotFound();
+                return RedirectToAction("NotFound", "Error");
 
             return View(cliente);
         }
@@ -55,7 +55,7 @@ namespace Presentation.Controllers
         {
             var cliente = await _clienteService.ObterPorIdAsync(id);
             if (cliente is null)
-                return HttpNotFound();
+                return RedirectToAction("NotFound", "Error");
 
             return View(cliente);
         }
@@ -76,7 +76,7 @@ namespace Presentation.Controllers
         {
             var cliente = await _clienteService.ObterPorIdAsync(id);
             if (cliente is null)
-                return HttpNotFound();
+                return RedirectToAction("NotFound", "Error");
 
             return View(cliente);
         }

@@ -1,75 +1,121 @@
-# Teste Prático - Desenvolvedor .NET (OdontoClinic)
+# 🦷 Teste Prático - Desenvolvedor .NET (OdontoClinic)
 
-Este projeto foi desenvolvido como parte do processo seletivo para a vaga de Desenvolvedor .NET na OdontoClinic. O objetivo foi criar um sistema de cadastro de clientes, persistência de dados em SQL Server com NHibernate e cache de leitura utilizando Redis.
+Este projeto foi desenvolvido como parte do processo seletivo para a vaga de Desenvolvedor .NET na **OdontoClinic**. O objetivo foi criar um sistema de **cadastro de clientes**, com persistência em **SQL Server** usando **NHibernate** e cache de leitura com **Redis**.
 
 ---
 
-## 📌 Tecnologias Utilizadas
+## 🛠️ Tecnologias Utilizadas
 
 - ASP.NET MVC (.NET Framework 4.7.2)
 - NHibernate + Fluent NHibernate
 - SQL Server
-- Redis (via StackExchange.Redis)
-- DDD / Clean Architecture
+- Redis (StackExchange.Redis)
+- Docker (Redis)
 - Unity (Injeção de Dependência)
-- Docker (para Redis)
+- DDD / Clean Architecture
 
 ---
 
-## ✅ Funcionalidades
+## ✅ Funcionalidades Implementadas
 
-- [x] Cadastro de clientes
-- [x] Edição de clientes com validações
-- [x] Exclusão e visualização de detalhes
-- [x] Cada cliente pode ter múltiplos telefones, mas apenas um ativo
-- [x] Redis para cache de leitura (cliente individual e listagem)
-- [x] Arquitetura limpa com separação de responsabilidades
-
----
-
-## 🗃️ Banco de Dados
-
-- SQL Server local
-- Geração de schema automática via NHibernate (FluentMappings)
-- Connection string configurada em `Presentation/web.config`
+- Cadastro, edição, exclusão e visualização de clientes
+- Cada cliente pode ter múltiplos telefones, com **apenas um ativo**
+- Formulário dinâmico de telefones com validações em JavaScript
+- Validações de domínio e regras de negócio
+- Cache de leitura com Redis (detalhes e listagem)
+- Arquitetura limpa com separação clara entre camadas:
+  - `Core`, `Application`, `Infrastructure`, `Presentation`
 
 ---
 
-## 🚀 Cache com Redis
+## 📃 Banco de Dados
 
-- Leitura de cliente e listagem busca primeiro no Redis
-- Caso não exista, busca no SQL Server e salva no Redis
-- Cache limpo automaticamente em ações de edição e remoção
-- Redis executado localmente via Docker e refêrenciado como localhost no CacheService:
+- Banco: **SQL Server Local**
+- Geração de schema automática via **Fluent NHibernate**
+- Connection string configurada em:\
+  `Presentation/web.config`
+
+### 🧪 Criar banco local (caso necessário)
+
+```sql
+CREATE DATABASE ClientesDb;
+```
+
+---
+
+## 🧱 Geração do Banco de Dados
+
+O projeto utiliza o recurso `SchemaUpdate` do NHibernate para **gerar as tabelas automaticamente** ao rodar a aplicação, desde que o banco de dados `ClientesDb` já exista no SQL Server.
+
+> ⚠️ Atenção: O método `SchemaExport`, que recria o schema inteiro, **apaga todos os dados** existentes. Por isso, ele foi substituído por `SchemaUpdate`, que apenas cria o que estiver faltando.
+
+Caso queira forçar a recriação do schema (útil nos primeiros testes), basta descomentar o trecho:
+
+```csharp
+.ExposeConfiguration(config => new SchemaExport(config).Create(false, true))
+
+
+---
+
+## 🧠 Redis Cache
+
+- Implementação via `StackExchange.Redis`
+- Busca de cliente verifica cache primeiro (read-through)
+- Cache atualizado após criação/edição e removido na exclusão
+
+### Subir Redis via Docker:
 
 ```bash
 docker run --name redis-dev -p 6379:6379 -d redis
 ```
 
---- 
+---
 
-## ▶️ Como executar o projeto
+## ▶️ Executando o Projeto
 
-Tenha o SQL Server rodando localmente
-
-Suba o Redis com Docker (veja acima)
-
-Ajuste a connection string em web.config se necessário
-
-Compile e execute a aplicação via Visual Studio
+1. Instale o SQL Server e crie o banco conforme acima
+2. Suba o Redis via Docker (ou local)
+3. Ajuste a string de conexão se necessário
+4. Abra a solução no Visual Studio 2019
+5. Compile e execute o projeto
 
 ---
 
-## 🔑 Dados de Exemplo
+## 🥪 Dados de Exemplo
 
-Na inicialização, um cliente é inserido automaticamente caso ainda não existam registros.
+Na primeira execução, se o banco estiver vazio, um cliente é inserido automaticamente:
 
-Cliente: Maria Souza
-Telefone: 11988887777 (ativo)
+- **Nome:** Maria Souza
+- **Telefone:** 11988887777 (ativo)
 
 ---
 
-## 👨‍💻 Desenvolvido por
-**Marcelo Lima**
-Desenvolvedor .NET Fullstack
-[LinkedIn](https://www.linkedin.com/in/marcelolima11/)
+## ❗ Tratamento de Erros
+
+- Erros HTTP como 404 são redirecionados para views customizadas
+- Validações de domínio são exibidas ao usuário no formulário
+
+---
+
+## 👨‍💼 Desenvolvido por
+
+**Marcelo Lima**\
+Desenvolvedor .NET Fullstack\
+[LinkedIn →](https://www.linkedin.com/in/marcelolima11/)
+
+---
+
+## ✅ Pontos Extras
+
+- 🛡️ Uso de DDD com foco em boas práticas
+- 🧠 Camadas bem definidas e desacopladas
+- 📂 Redis funcionando em Docker + cache inteligente
+- 💅 Layout estilizado com Bootstrap + ícones
+- 📄 README explicativo + script para setup
+
+---
+
+📝 Obs: O projeto já está configurado para gerar as tabelas automaticamente via NHibernate (`SchemaExport`). Basta garantir que o banco `ClientesDb` exista no seu SQL Server local. 
+
+Foi um super desafio, obrigado pela oportunidade! 😎
+
